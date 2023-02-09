@@ -35,7 +35,7 @@ function App() {
   or entity that the letter is addressed to. I will also give you the reason for the 
   letter and an illness that the patient may have. The letter is not addressed to the patient.
   Use these clues to construct a letter in a 
-  professional manner that is about 200 words 
+  professional manner that is less than 200 words 
   Provider Name: ${docName}
   Addressed To: ${addressedTo}
   Reason for Letter: ${reasonForLetter}
@@ -58,7 +58,7 @@ function App() {
     or entity that the letter is addressed to. I will also give you the reason for the 
     letter and an illness that the patient may have. The letter is not addressed to the patient.
     Use these clues to construct a letter in a 
-    professional manner that is about 200 words 
+    professional manner that is less than 200 words 
     Provider Name: ${docName}
     Addressed To: ${addressedTo}
     Reason for Letter: ${reasonForLetter}
