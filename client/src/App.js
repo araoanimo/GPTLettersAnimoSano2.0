@@ -29,6 +29,7 @@ function App() {
   const [illness, setIllness] = useState('');
   const [addressedTo, setAddressedTo] = useState('');
   const [isVerifiedRecaptcha, setVerifiedRecaptcha] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   let prompt = `I want you to act as a provider writing a letter for their health provider practice. 
   I will give you the name of the provider that you are impersonating and the person 
@@ -48,6 +49,8 @@ function App() {
     console.log(isVerifiedRecaptcha);
   }
 
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(docName);
@@ -65,7 +68,7 @@ function App() {
     Illness: ${illness}`;
   console.log(prompt);
   console.log(`API URL = ${API_URL}`);
-
+  setIsSubmitting(true);
   trackPromise(
     fetch('/', {
       method: 'POST',
@@ -78,6 +81,7 @@ function App() {
       .then(res => res.blob())
       .then(blob => {
         saveAs(blob, "Letter_Here.docx")
+        setIsSubmitting(false);
       })
       .catch(err => console.error(err))
   );
@@ -186,7 +190,7 @@ function App() {
               margin: '16px',
           }}
             variant = "contained"
-            disabled = {!isVerifiedRecaptcha}
+            disabled = {!isVerifiedRecaptcha || isSubmitting}
             onClick = {handleSubmit}>
               Submit
             </Button>
