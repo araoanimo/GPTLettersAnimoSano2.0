@@ -107,12 +107,12 @@ function App() {
   
 
   return (
-    <div className="App">
+    <div className = "App">
       <Header />
       <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 2, width: '120%' },
+        '& .MuiTextField-root': { m: 1.5, width: '48%' },
       }}
       noValidate
       autoComplete="off"
@@ -120,21 +120,21 @@ function App() {
       <div className = "container">
       <TextField
           multiline
+          fullWidth
           id="outlined"
           label="Provider Name"
           sx={{
-            color: 'success.main',
-            width: '40px',
+
             display: 'inline-block'
           }}
           onChange = {(e) => setDocName(e.target.value)}
         />
         <TextField
           multiline
+          fullWidth
           id="outlined"
           sx={{
             color: 'success.main',
-            width: '30%',
             display: 'inline-block'
           }}
           label="Addressed To"
@@ -142,10 +142,10 @@ function App() {
         />
         <TextField
           multiline
+          fullWidth
           id="outlined"
           sx={{
             color: 'success.main',
-            width: '30%',
             display: 'inline-block'
 
           }}
@@ -155,10 +155,10 @@ function App() {
         />
         <TextField
           multiline
+          fullWidth
           optional="true"
           sx={{
             color: 'success.main',
-            width: '30%',
             display: 'inline-block'
           }}
           id="outlined"
@@ -186,9 +186,14 @@ function App() {
             onChange={handleRecaptchaChange}
             />
             <Button
+            
             sx={{
               margin: '16px',
+              backgroundColor: '#07376b',
+              maxWidth: '48%',
+              minWidth: '48%',
           }}
+         
             variant = "contained"
             disabled = {!isVerifiedRecaptcha || isSubmitting}
             onClick = {handleSubmit}>
