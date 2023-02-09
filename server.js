@@ -33,19 +33,8 @@ const openai = new OpenAIApi(configuration);
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const port = process.env.PORT || 3001;
-console.log(process.env.PORT);
-console.log(process.env.NODE_ENV);
 app.use(bodyParser.json());
 
-if (process.env.NODE_ENV === 'production'){
-  // set static folder
-  app.use(express.static('build'));
-  console.log('production mode');
-  app.get('*', (req, res) =>{
-      res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-  });
-}
 
 
 
@@ -90,15 +79,20 @@ app.post('/', async (req, res) => {
         if (err) throw err;
         res.send(data);
     });
-    
+});
 
-    
+if (process.env.NODE_ENV === 'production'){
+  // set static folder
+  app.use(express.static('client/build'));
 
-    
+  app.get('*', (req, res) =>{
+      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
-);
 
-
+const port = process.env.PORT || 3001;
+console.log(port);
+console.log(process.env.NODE_ENV);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}/`);
