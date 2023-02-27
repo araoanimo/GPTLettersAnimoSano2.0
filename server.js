@@ -84,11 +84,13 @@ app.post('/', async (req, res) => {
         if (err) throw err;
         res.send(data);
     });
-    fs.unlink(fileNameUploaded, err => {
-      if(err) throw err;
-      console.log('file was deleted');
-    })
-    //fileName = animoTemplate;
+    if(fileNameUploaded){
+      fs.unlink(fileNameUploaded, err => {
+        if(err) throw err;
+        console.log('file was deleted');
+      })
+    }
+    
 });
 
 if (process.env.NODE_ENV === 'production'){
@@ -101,8 +103,6 @@ if (process.env.NODE_ENV === 'production'){
 }
 
 const port = process.env.PORT || 3001;
-console.log(port);
-console.log(process.env.NODE_ENV);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}/`);

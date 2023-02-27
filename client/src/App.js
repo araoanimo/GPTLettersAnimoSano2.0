@@ -20,9 +20,7 @@ function App() {
   const API_URL = '/';
   const REACT_APP_RECAPTCHA_SITE_KEY = '6LevmTEkAAAAAO7GlaE54yfu_aKwk2nRHSGA4SzT';
 
-  // if(process.env.NODE_ENV === 'production'){
-  //   API_URL = '';
-  // }
+
   const numRowsTextBox = "3";
   const [docName, setDocName] = useState('');
   const [reasonForLetter, setReasonForLetter] = useState('');
@@ -50,14 +48,12 @@ follow the patient name indicate the patient date of birth in square brackets li
   
   const handleRecaptchaChange = (value) => {
     setVerifiedRecaptcha(true);
-    console.log(isVerifiedRecaptcha);
   }
 
   
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hello world");
     prompt = `You are a health provider writing a letter. The provider is not necessarily a doctor.
     I will give you the name of the provider that you are impersonating and the person 
     or entity that the letter is addressed to. I will also give you the reason for the 
@@ -71,15 +67,12 @@ follow the patient name indicate the patient date of birth in square brackets li
     Addressed To: ${addressedTo}
     Reason for Letter: ${reasonForLetter}
     Diagnosis: ${diagnosis}`;
-  console.log(prompt);
   setIsSubmitting(true);
-  console.log(fileName);
   trackPromise(
     fetch('/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        //try sending the file here if it has been uploaded
       },
       body: JSON.stringify({message: prompt, fileNameUploaded: fileName}),
 
@@ -98,7 +91,6 @@ follow the patient name indicate the patient date of birth in square brackets li
     e.preventDefault();
     const file = e.target.files[0];
     setFileName(file.name);
-    console.log(file.name);
     const form = new FormData();
     form.append('uploadedFile', file);
     fetch('/postFile', {
