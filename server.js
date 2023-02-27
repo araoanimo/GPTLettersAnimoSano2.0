@@ -11,9 +11,8 @@ const upload = multer({ storage: storage, limit: { fileSize: 10 * 1024 * 1024 } 
 
 
 let animoTemplate = 'Letter_Template_Animo_Sano.docx';
-let chosenTemplate = 'Letter_Template_Choice.docx';
 let copyFile = 'Letter_Template_Copy.docx';
-let fileName = animoTemplate;
+//let fileName = animoTemplate;
 fs.writeFileSync('Letter_Template_Copy.docx', '', err => {
   if(err) throw err;
   console.log('file was cleared');
@@ -39,16 +38,19 @@ app.use(bodyParser.json());
 
 
 
+
 app.post('/postFile', upload.single('uploadedFile'), (req, res) => {
     // do something with the file, e.g. save it to a database or disk
-    fs.writeFile(chosenTemplate, req.file.buffer, err => {
+    const fileNameTemp = req.file.originalname;
+    fs.writeFile(fileNameTemp, req.file.buffer, err => {
         if (err) {
           console.error(err);
           res.status(500).send('Error saving file to disk.');
           return;
         }
-        fileName = chosenTemplate;
+        console.log(fileNameTemp);
         res.send('File received and saved to disk.');
+        console.log('file was saved as next template');
       });
   });
 
@@ -58,27 +60,35 @@ app.post('/', async (req, res) => {
   //   if(err) throw err;
   //   console.log('file was cleared');
   // });
+  console.log(req.body);
     const { message } = req.body;
-    
+    const { fileNameUploaded } = req.body;
     let promptHere = `${message} `;
     console.log(promptHere);
-    
+    console.log(fileNameUploaded);
+    const fileName = fileNameUploaded || animoTemplate;
     const response = await openai.createCompletion({
         model: "text-davinci-003",
         prompt: `${promptHere}`,
         max_tokens: 491,
-        temperature: 0,
+        temperature: 0.5,
       });
     const ressy = (response && response.data && response.data.choices[0].text);
     
+    console.log('fileName: ' + fileName);
     let doc = new Document(fileName);
     doc.add_paragraph(ressy);
     doc.save(copyFile);
-
+    
     fs.readFile(copyFile, (err, data) => {
         if (err) throw err;
         res.send(data);
     });
+    fs.unlink(fileNameUploaded, err => {
+      if(err) throw err;
+      console.log('file was deleted');
+    })
+    //fileName = animoTemplate;
 });
 
 if (process.env.NODE_ENV === 'production'){
