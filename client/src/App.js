@@ -26,21 +26,25 @@ function App() {
   const numRowsTextBox = "3";
   const [docName, setDocName] = useState('');
   const [reasonForLetter, setReasonForLetter] = useState('');
-  const [illness, setIllness] = useState('');
+  const [diagnosis, setDiagnosis] = useState('');
   const [addressedTo, setAddressedTo] = useState('');
   const [isVerifiedRecaptcha, setVerifiedRecaptcha] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fileName, setFileName] = useState('');
 
-  let prompt = `I want you to act as a provider writing a letter for their health provider practice. 
+  let prompt = `You are a health provider writing a letter. The provider is not necessarily a doctor.
   I will give you the name of the provider that you are impersonating and the person 
   or entity that the letter is addressed to. I will also give you the reason for the 
-  letter and an illness that the patient may have. The letter is not addressed to the patient.
+  letter and a diagnosis that the patient may have. The letter is not addressed to the patient.
+The letter should be written in first person as though from the provider. Please include the ICD code in parentheses 
+for the Diagnosis. Patient name should be indicated in square brackets like [Patient Name] and 
+follow the patient name indicate the patient date of birth in square brackets like [DOB].
   Use these clues to construct a letter in a 
-  professional manner that is less than 200 words 
+  professional manner that is less than 200 words  
   Provider Name: ${docName}
   Addressed To: ${addressedTo}
   Reason for Letter: ${reasonForLetter}
-  Illness: ${illness}`;
+  Diagnosis: ${diagnosis}`;
   
 
   
@@ -53,29 +57,31 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(docName);
-    console.log(illness);
     console.log("hello world");
-    prompt = `I want you to act as a provider writing a letter for their health provider practice. 
+    prompt = `You are a health provider writing a letter. The provider is not necessarily a doctor.
     I will give you the name of the provider that you are impersonating and the person 
     or entity that the letter is addressed to. I will also give you the reason for the 
-    letter and an illness that the patient may have. The letter is not addressed to the patient.
+    letter and a diagnosis that the patient may have. The letter is not addressed to the patient.
+  The letter should be written in first person as though from the provider. Please include the ICD code in parentheses 
+  for the Diagnosis. Patient name should be indicated in square brackets like [Patient Name] and 
+  follow the patient name indicate the patient date of birth in square brackets like [DOB].
     Use these clues to construct a letter in a 
-    professional manner that is less than 200 words 
+    professional manner that is less than 200 words  
     Provider Name: ${docName}
     Addressed To: ${addressedTo}
     Reason for Letter: ${reasonForLetter}
-    Illness: ${illness}`;
+    Diagnosis: ${diagnosis}`;
   console.log(prompt);
-  console.log(`API URL = ${API_URL}`);
   setIsSubmitting(true);
+  console.log(fileName);
   trackPromise(
     fetch('/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        //try sending the file here if it has been uploaded
       },
-      body: JSON.stringify({message: prompt}),
+      body: JSON.stringify({message: prompt, fileNameUploaded: fileName}),
 
     })
       .then(res => res.blob())
@@ -91,7 +97,8 @@ function App() {
 
     e.preventDefault();
     const file = e.target.files[0];
-
+    setFileName(file.name);
+    console.log(file.name);
     const form = new FormData();
     form.append('uploadedFile', file);
     fetch('/postFile', {
@@ -100,8 +107,7 @@ function App() {
     })
       .then(res => console.log(res))
       .catch(err => console.error(err));
-
-    }
+     }
   
 
   
@@ -112,7 +118,8 @@ function App() {
       <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1.5, width: '48%' },
+        '& .MuiTextField-root': { m: 1.5, width: '50%'},
+        
       }}
       noValidate
       autoComplete="off"
@@ -123,8 +130,9 @@ function App() {
           fullWidth
           id="outlined"
           label="Provider Name"
+          align = "left"
           sx={{
-
+            flexDirection: 'column',
             display: 'inline-block'
           }}
           onChange = {(e) => setDocName(e.target.value)}
@@ -133,6 +141,7 @@ function App() {
           multiline
           fullWidth
           id="outlined"
+          align="left"
           sx={{
             color: 'success.main',
             display: 'inline-block'
@@ -162,20 +171,22 @@ function App() {
             display: 'inline-block'
           }}
           id="outlined"
-          label="Illness"
-          onChange = {(e) => setIllness(e.target.value)}
+          label="Diagnosis"
+          onChange = {(e) => setDiagnosis(e.target.value)}
         />
 
-        {/* <Button variant="contained" component="label"
+        <Button variant="contained" component="label" 
         sx={{
+          width: '50%',
             margin: '16px',
         }}>
           Upload
           
-          <input hidden accept=".docx" 
+          <input 
+            accept=".docx" 
             type="file"
             onChange =  {(e) => handleSubmitFile(e)}/>
-        </Button> */}
+        </Button>
       
           <ReCAPTCHA
           style={{
