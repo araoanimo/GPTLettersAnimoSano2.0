@@ -12,7 +12,6 @@ const upload = multer({ storage: storage, limit: { fileSize: 10 * 1024 * 1024 } 
 
 let animoTemplate = 'Letter_Template_Animo_Sano.docx';
 let copyFile = 'Letter_Template_Copy.docx';
-//let fileName = animoTemplate;
 fs.writeFileSync('Letter_Template_Copy.docx', '', err => {
   if(err) throw err;
   console.log('file was cleared');
@@ -56,10 +55,7 @@ app.post('/postFile', upload.single('uploadedFile'), (req, res) => {
 
 
 app.post('/', async (req, res) => {
-  // fs.writeFileSync('Letter_Template_Copy.docx', '', err => {
-  //   if(err) throw err;
-  //   console.log('file was cleared');
-  // });
+  
   console.log(req.body);
     const { message } = req.body;
     const { fileNameUploaded } = req.body;
@@ -76,21 +72,28 @@ app.post('/', async (req, res) => {
     const ressy = (response && response.data && response.data.choices[0].text);
     
     console.log('fileName: ' + fileName);
-    let doc = new Document(fileName);
-    doc.add_paragraph(ressy);
-    doc.save(copyFile);
+    try{
+      let doc = new Document(fileName);
+      doc.add_paragraph(ressy);
+      doc.save(copyFile);
+    }
+    catch(err){
+      console.log('file was not found');
+    }
+    
+    
     
     fs.readFile(copyFile, (err, data) => {
         if (err) throw err;
         res.send(data);
     });
-    if(fileNameUploaded){
-      fs.unlink(fileNameUploaded, err => {
-        if(err) throw err;
-        console.log('file was deleted');
-      })
-    }
-    
+
+      if(fileNameUploaded){
+        fs.unlink(fileNameUploaded, err => {
+          if(err) console.log(err);
+          console.log('file was deleted');
+        })
+      }
 });
 
 if (process.env.NODE_ENV === 'production'){
