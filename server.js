@@ -63,13 +63,15 @@ app.post('/', async (req, res) => {
     console.log(promptHere);
     console.log(fileNameUploaded);
     const fileName = fileNameUploaded || animoTemplate;
-    const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: `${promptHere}`,
+    const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {"role": "user", "content": `${promptHere}`},
+        ],
         max_tokens: 491,
-        temperature: 0.5,
+        temperature: 1.0,
       });
-    const ressy = (response && response.data && response.data.choices[0].text);
+    const ressy = (response && response.data && response.data.choices[0].message.content);
     
     console.log('fileName: ' + fileName);
     try{

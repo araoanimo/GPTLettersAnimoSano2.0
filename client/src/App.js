@@ -36,7 +36,7 @@ function App() {
   letter and a diagnosis that the patient may have. The letter is not addressed to the patient.
 The letter should be written in first person as though from the provider. Please include the ICD code in parentheses 
 for the Diagnosis. Patient name should be indicated in square brackets like [Patient Name] and 
-follow the patient name indicate the patient date of birth in square brackets like [DOB].
+after [Patient Name] indicate a place to insert the patient date of birth in square brackets like [DOB].
   Use these clues to construct a letter in a 
   professional manner that is less than 200 words  
   Provider Name: ${docName}
@@ -60,7 +60,7 @@ follow the patient name indicate the patient date of birth in square brackets li
     letter and a diagnosis that the patient may have. The letter is not addressed to the patient.
   The letter should be written in first person as though from the provider. Please include the ICD code in parentheses 
   for the Diagnosis. Patient name should be indicated in square brackets like [Patient Name] and 
-  follow the patient name indicate the patient date of birth in square brackets like [DOB].
+  after [Patient Name] indicate a place to insert the patient date of birth in square brackets like [DOB].
     Use these clues to construct a letter in a 
     professional manner that is less than 200 words  
     Provider Name: ${docName}
