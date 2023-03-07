@@ -6,7 +6,7 @@ const fs = require('fs');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limit: { fileSize: 10 * 1024 * 1024 } });
-
+const authMiddleware = require("./auth-middleware");
 
 
 
@@ -32,6 +32,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
+app.use("/", authMiddleware);
 
 
 
@@ -41,6 +42,7 @@ app.use(bodyParser.json());
 app.post('/postFile', upload.single('uploadedFile'), (req, res) => {
     // do something with the file, e.g. save it to a database or disk
     const fileNameTemp = req.file.originalname;
+    console.log(fileNameTemp);
     fs.writeFile(fileNameTemp, req.file.buffer, err => {
         if (err) {
           console.error(err);
