@@ -8,7 +8,7 @@ function authMiddleware(request, response, next) {
   const headerToken = request.headers.authorization;
   console.log(request.headers);
   if (!headerToken) {
-     response.send({ message: "No token provided" }).status(401);
+    return response.send({ message: "No token provided" }).status(401);
   }
 
   if (headerToken && headerToken.split(" ")[0] !== "Bearer") {
