@@ -38,6 +38,7 @@ app.use("/", authMiddleware);
 
 
 
+
 app.post('/postFile', upload.single('uploadedFile'), (req, res) => {
     // do something with the file, e.g. save it to a database or disk
     const fileNameTemp = req.file.originalname;
@@ -86,6 +87,7 @@ app.post('/', async (req, res) => {
     
     fs.readFile(copyFile, (err, data) => {
         if (err) throw err;
+        console.log(data);
         res.send(data);
     });
 

@@ -19,15 +19,7 @@ const REACT_APP_RECAPTCHA_SITE_KEY = '6LevmTEkAAAAAO7GlaE54yfu_aKwk2nRHSGA4SzT';
 
   function Dashboard() {
 
-    // const [authenticated, setAuthenticated] = useState(null);
-    // useEffect(() => {
-    //     const loggedInUser = localStorage.getItem("authenticated");
-    //     console.log(loggedInUser);
-    //     if (loggedInUser) {
-    //         setAuthenticated(loggedInUser);
-    //     }
-    // }, []);const [authenticated, setauthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated")|| false));
-    const [authenticated, setauthenticated] = useState((localStorage.getItem("authenticated")|| false));
+   const [authenticated, setAuthenticated] = useState((localStorage.getItem("authenticated")|| false));
 
 
 
@@ -85,14 +77,32 @@ after [Patient Name] indicate a place to insert the patient date of birth in squ
         Authorization: "Bearer " + localStorage.getItem('@token'),
       },
       body: JSON.stringify({message: prompt, fileNameUploaded: fileName}),
-
     })
-      .then(res => res.blob())
+      .then(res => //{
+        // console.log(res)
+        // if(!res.ok){
+        //   setAuthenticated(false)
+        //   alert("Please sign in and try again")
+        // }
+        res.blob()
+        // const blob = res.blob();
+        // saveAs(blob, "Letter_Here.docx")
+        // setIsSubmitting(false);
+      //}
+      )
       .then(blob => {
+        if(blob.size <= 5){
+          alert("Please sign in and try again")
+          setAuthenticated(false)
+        }
+        console.log(blob)
         saveAs(blob, "Letter_Here.docx")
         setIsSubmitting(false);
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.log(err)
+        alert("Please reload the page and try again")
+      })
   );
   }
 
@@ -109,7 +119,12 @@ after [Patient Name] indicate a place to insert the patient date of birth in squ
       },
       body:form
     })
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        if(!res.ok){
+          setAuthenticated(false);
+        }
+      })
       .catch(err => {
         console.error(err)
         alert("Please reload the page and try again")

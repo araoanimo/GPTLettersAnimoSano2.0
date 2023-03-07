@@ -19,7 +19,13 @@ function authMiddleware(request, response, next) {
     .auth()
     .verifyIdToken(token)
     .then(() => next())
-    .catch(() => response.send({ message: "Could not authorize" }).status(403));
+    .catch(() => {
+      response.send(new ArrayBuffer(0));
+      //response.status(403).send({ message: "Could not authorize" });
+      //throw new Error("Could not authorize");
+      console.log("Could not authorize");
+    
+    });
 }
 
 module.exports = authMiddleware;
