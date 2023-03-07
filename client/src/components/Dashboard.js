@@ -95,7 +95,6 @@ after [Patient Name] indicate a place to insert the patient date of birth in squ
           alert("Please sign in and try again")
           setAuthenticated(false)
         }
-        console.log(blob)
         saveAs(blob, "Letter_Here.docx")
         setIsSubmitting(false);
       })
@@ -131,7 +130,6 @@ after [Patient Name] indicate a place to insert the patient date of birth in squ
       });
      }
   
-     console.log(authenticated + "authenticated");
      if (!authenticated) {
         console.log("not authenticated");
         return <Navigate replace to="/" />;

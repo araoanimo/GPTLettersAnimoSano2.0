@@ -87,7 +87,6 @@ app.post('/', async (req, res) => {
     
     fs.readFile(copyFile, (err, data) => {
         if (err) throw err;
-        console.log(data);
         res.send(data);
     });
 

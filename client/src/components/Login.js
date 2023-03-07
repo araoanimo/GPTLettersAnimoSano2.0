@@ -37,7 +37,7 @@ export default function Login() {
   return (
     <div>
       <button onClick={googleLogin} className="login-button">
-        GOOGLE SIGN IN
+        SIGN IN WITH GOOGLE
       </button>
     </div>
   );
