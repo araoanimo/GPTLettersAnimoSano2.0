@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Login() {
 
     const navigate = useNavigate();
-    
+    console.log("made it to login");
     async function googleLogin() {
         //1 - init Google Auth Provider
         const provider = new firebase.auth.GoogleAuthProvider();
