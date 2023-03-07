@@ -7,5 +7,5 @@ firebase.initializeApp({
     databaseURL: 'https://fir-gptletters.firebaseio.com',
 })
 
-
+console.log(creds);
 module.exports = firebase;

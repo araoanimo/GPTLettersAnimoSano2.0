@@ -16,6 +16,7 @@ export default function Login() {
         async (result) => {
             //3 - pick the result and store the token
             const token = await auth?.currentUser?.getIdToken(true);
+            console.log("login here");
             //4 - check if have token in the current user
             if (token) {
             //5 - put the token at localStorage (We'll use this to make requests)

@@ -6,6 +6,7 @@ const firebase = require("./firebase");
 
 function authMiddleware(request, response, next) {
   const headerToken = request.headers.authorization;
+  console.log(request);
   if (!headerToken) {
     return response.send({ message: "No token provided" }).status(401);
   }
