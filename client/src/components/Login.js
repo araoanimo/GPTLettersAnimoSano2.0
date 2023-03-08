@@ -32,8 +32,7 @@ export default function Login() {
         },
         function (error) {
             console.log(error);
-        }
-        );
+        });
     }
   return (
     <div>

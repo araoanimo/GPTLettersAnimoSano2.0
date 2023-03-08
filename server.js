@@ -32,14 +32,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
-app.use("/", authMiddleware);
+app.use("/api", authMiddleware);
 
 
 
 
 
 
-app.post('/postFile', upload.single('uploadedFile'), (req, res) => {
+app.post('/api/postFile', upload.single('uploadedFile'), (req, res) => {
     // do something with the file, e.g. save it to a database or disk
     const fileNameTemp = req.file.originalname;
     console.log(fileNameTemp);
@@ -56,7 +56,7 @@ app.post('/postFile', upload.single('uploadedFile'), (req, res) => {
   });
 
 
-app.post('/', async (req, res) => {
+app.post('/api', async (req, res) => {
   
   console.log(req.body);
     const { message } = req.body;

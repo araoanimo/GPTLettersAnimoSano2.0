@@ -70,7 +70,7 @@ after [Patient Name] indicate a place to insert the patient date of birth in squ
     Diagnosis: ${diagnosis}`;
   setIsSubmitting(true);
   trackPromise(
-    fetch('/', {
+    fetch('/api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ after [Patient Name] indicate a place to insert the patient date of birth in squ
     setFileName(file.name);
     const form = new FormData();
     form.append('uploadedFile', file);
-    fetch('/postFile', {
+    fetch('/api/postFile', {
       method: 'POST',
       headers: {
         Authorization: "Bearer " + localStorage.getItem('@token'),
