@@ -4,6 +4,30 @@
 
 const firebase = require("./firebase");
 
+const validateToken = (req, res) => {
+  const headerToken = req;
+  if (!headerToken) {
+    res.send({isToken: false});
+  }
+
+  if (headerToken && headerToken.split(" ")[0] !== "Bearer") {
+    res.send({isToken: false});
+  }
+  const token = headerToken.split(" ")[1];
+  firebase
+    .auth()
+    .verifyIdToken(token)
+    .then(() => res.send({isToken: true}))
+    .catch((err) => console.log(err))
+    }
+    // .catch(() => {
+    //   console.log("Token not valid");
+    //   //response.status(403).send({ message: "Could not authorize" });
+    //   //throw new Error("Could not authorize");
+    
+    // });
+
+
 function authMiddleware(request, response, next) {
   const headerToken = request.headers.authorization;
   if (!headerToken) {
@@ -28,4 +52,4 @@ function authMiddleware(request, response, next) {
     });
 }
 
-module.exports = authMiddleware;
+module.exports = {authMiddleware, validateToken};
