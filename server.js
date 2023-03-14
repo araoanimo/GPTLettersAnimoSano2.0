@@ -6,7 +6,7 @@ const fs = require('fs');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limit: { fileSize: 10 * 1024 * 1024 } });
-const authMiddleware = require("./auth-middleware");
+const {authMiddleware, validateToken} = require("./auth-middleware");
 
 
 
@@ -32,10 +32,33 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
-app.use("/api", authMiddleware);
+//app.use("/api", authMiddleware);
 
 
-
+app.put('/auth/validateToken', (req, res) => {
+  //const token = req.headers.authorization;
+  console.log("HELLO WORLD");
+  console.log(req.body.token);
+  try{
+    //res.send({isToken: validateToken(req.body.token)});
+    res.send("good").status(200);
+    validateToken(req.body.token).then(res => res.json).then(data => console.log(data))
+      // console.log(response);
+      // if(response == true){
+      //   res.send(true);
+      // }
+      // else{
+      //   res.send(false);
+      // }
+    
+  }
+    catch(err){
+      console.log(err);
+      res.send("bad").status(401);
+    
+  }
+  
+})
 
 
 
@@ -56,7 +79,7 @@ app.post('/api/postFile', upload.single('uploadedFile'), (req, res) => {
   });
 
 
-app.post('/api', async (req, res) => {
+app.post('/api/submit', async (req, res) => {
   
   console.log(req.body);
     const { message } = req.body;

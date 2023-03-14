@@ -6,7 +6,10 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { trackPromise} from 'react-promise-tracker';
 import { Navigate } from 'react-router-dom';
-import { Alert } from 'react-alert'
+import {useNavigate } from "react-router-dom";
+import { auth } from "../firebaseReact";
+
+
 
 const FormData = require('form-data');
 
@@ -20,8 +23,26 @@ const REACT_APP_RECAPTCHA_SITE_KEY = '6LevmTEkAAAAAO7GlaE54yfu_aKwk2nRHSGA4SzT';
   function Dashboard() {
 
    const [authenticated, setAuthenticated] = useState((localStorage.getItem("authenticated")|| false));
+   
+   useEffect(() => {
+    refreshToken();
+   }, []);
 
 
+   const navigate = useNavigate();
+
+    async function refreshToken() {
+      
+      //const user = localStorage.getItem("@user");
+      //console.log(auth.user);
+      //const token = auth.user.getIdToken(true);
+      //console.log(token);
+      if(!localStorage.getItem("authenticated")){
+        console.log("No token");
+        navigate("/");
+        //navigate("/")
+      }
+    }
 
   const [docName, setDocName] = useState('');
   const [reasonForLetter, setReasonForLetter] = useState('');
@@ -70,7 +91,7 @@ after [Patient Name] indicate a place to insert the patient date of birth in squ
     Diagnosis: ${diagnosis}`;
   setIsSubmitting(true);
   trackPromise(
-    fetch('/api', {
+    fetch('/api/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -129,12 +150,7 @@ after [Patient Name] indicate a place to insert the patient date of birth in squ
         alert("Please reload the page and try again")
       });
      }
-  
-     if (!authenticated) {
-        console.log("not authenticated");
-        return <Navigate replace to="/" />;
-    }
-else{
+     
     return (
         <div><Box
         component="form"
@@ -235,7 +251,6 @@ else{
         </div>
     )
     }
-}
 
 
 export default Dashboard

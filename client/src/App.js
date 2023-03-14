@@ -27,8 +27,8 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
-          <Route path = "/" element = {<Login/>}/>
           <Route path = "/dashboard" element = {<Dashboard/>}/>
+          <Route path = "/" element = {<Login/>}/>
         </Routes>
       </BrowserRouter>
       {/* <Footer/> */}
